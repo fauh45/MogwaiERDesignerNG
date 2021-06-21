@@ -35,11 +35,17 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
 /**
  * @author $Author: mirkosertic $
  * @version $Date: 2009-03-13 15:40:33 $
  */
 public class ViewEditor extends BaseEditor {
+
+    private final Border ERROR_BORDER = new LineBorder(Color.RED);
+    private final Border NORMAL_BORDER = new LineBorder(Color.BLACK);
 
     private static final Logger LOGGER = Logger.getLogger(ViewEditor.class);
 
@@ -88,8 +94,7 @@ public class ViewEditor extends BaseEditor {
 
         viewProperties = model.getDialect().createViewPropertiesFor(aView);
         DefaultTabbedPaneTab theTab = editingView.getPropertiesPanel();
-        viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(
-                model, viewProperties);
+        viewPropertiesWrapper = ScaffoldingUtils.createScaffoldingPanelFor(model, viewProperties);
         theTab.add(viewPropertiesWrapper.getComponent(), BorderLayout.CENTER);
         if (!viewPropertiesWrapper.hasComponents()) {
             editingView.disablePropertiesTab();
@@ -107,19 +112,19 @@ public class ViewEditor extends BaseEditor {
 
             try {
                 // Test if every expression has an assigned alias
-                SQLUtils.updateViewAttributesFromSQL(new View(), editingView
-                        .getSqlText().getText());
+                SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
 
                 setModalResult(MODAL_RESULT_OK);
             } catch (Exception e) {
                 LOGGER.error("Error inspecting view : " + editingView.getSqlText().getText(), e);
+
+                editingView.getSqlText().setBorder(ERROR_BORDER);
             }
         }
     }
 
     @Override
-    public void applyValues() throws ElementAlreadyExistsException,
-            ElementInvalidNameException, VetoException {
+    public void applyValues() throws ElementAlreadyExistsException, ElementInvalidNameException, VetoException {
 
         View theView = viewBindingInfo.getDefaultModel();
 
@@ -131,10 +136,12 @@ public class ViewEditor extends BaseEditor {
         theView.getAttributes().clear();
 
         try {
-            SQLUtils.updateViewAttributesFromSQL(theView, editingView
-                    .getSqlText().getText());
+            SQLUtils.updateViewAttributesFromSQL(theView, editingView.getSqlText().getText());
+
+            editingView.getSqlText().setBorder(NORMAL_BORDER);
         } catch (Exception e) {
             // This exception is checked in commandOk before
+            editingView.getSqlText().setBorder(ERROR_BORDER);
         }
 
         if (!model.getViews().contains(theView)) {
