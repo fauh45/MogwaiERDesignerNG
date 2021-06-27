@@ -99,42 +99,42 @@ public final class SQLUtils {
 
 			char theCurrentChar = theSelectFields.charAt(p);
 			switch (theCurrentChar) {
-			case '(':
-				if (!inString) {
-					bracesCounter++;
+				case '(':
+					if (!inString) {
+						bracesCounter++;
+						theCurrentToken += theCurrentChar;
+					} else {
+						theCurrentToken += theCurrentChar;
+					}
+					break;
+				case ')':
+					if (!inString) {
+						bracesCounter--;
+					} else {
+						theCurrentToken += theCurrentChar;
+					}
 					theCurrentToken += theCurrentChar;
-				} else {
+					break;
+				case '\"':
+					inString = !inString;
 					theCurrentToken += theCurrentChar;
-				}
-				break;
-			case ')':
-				if (!inString) {
-					bracesCounter--;
-				} else {
+					break;
+				case '\'':
+					inString = !inString;
 					theCurrentToken += theCurrentChar;
-				}
-				theCurrentToken += theCurrentChar;
-				break;
-			case '\"':
-				inString = !inString;
-				theCurrentToken += theCurrentChar;
-				break;
-			case '\'':
-				inString = !inString;
-				theCurrentToken += theCurrentChar;
-				break;
-			case ',':
+					break;
+				case ',':
 
-				if (bracesCounter == 0 && !inString) {
-					addViewAttribute(theCurrentToken.trim(), aView);
-					theCurrentToken = "";
-				} else {
+					if (bracesCounter == 0 && !inString) {
+						addViewAttribute(theCurrentToken.trim(), aView);
+						theCurrentToken = "";
+					} else {
+						theCurrentToken += theCurrentChar;
+					}
+					break;
+				default:
 					theCurrentToken += theCurrentChar;
-				}
-				break;
-			default:
-				theCurrentToken += theCurrentChar;
-				break;
+					break;
 			}
 
 			p++;
@@ -151,8 +151,7 @@ public final class SQLUtils {
 	 * 
 	 * This is based on the Hibernate Formatter implementation.
 	 * 
-	 * @param aSQLStatement
-	 *		  - SQL statement to format
+	 * @param aSQLStatement - SQL statement to format
 	 * @return pretty formatted SQL
 	 */
 	public static String prettyFormat(String aSQLStatement) {

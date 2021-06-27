@@ -37,6 +37,8 @@ import java.awt.*;
 
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * @author $Author: mirkosertic $
@@ -74,6 +76,34 @@ public class ViewEditor extends BaseEditor {
         viewBindingInfo.configure();
 
         UIInitializer.getInstance().initialize(this);
+
+        editingView.getSqlText().getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Do nothing as it is not called upon plain text component
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updatePane();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updatePane();
+            }
+
+            private void updatePane() {
+                try {
+                    SQLUtils.updateViewAttributesFromSQL(new View(), editingView.getSqlText().getText());
+
+                    editingView.getSqlText().setBorder(NORMAL_BORDER);
+                } catch (Exception err) {
+                    editingView.getSqlText().setBorder(ERROR_BORDER);
+                }
+            }
+        });
+
     }
 
     /**
