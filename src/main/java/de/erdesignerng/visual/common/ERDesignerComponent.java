@@ -446,6 +446,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
                 new GenerateSQLCommand(), this,
                 ERDesignerBundle.GENERATECREATEDBDDL);
 
+        DefaultAction theGenerateSQLAI = new DefaultAction(
+                new GenerateSQLAI(), this, 
+                ERDesignerBundle.GENERATESQLWITHAI);
+
         DefaultAction theGenerateChangelog = new DefaultAction(
                 new GenerateChangeLogSQLCommand(), this,
                 ERDesignerBundle.GENERATECHANGELOG);
@@ -565,6 +569,8 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theDBMenu.add(new DefaultMenuItem(theReverseEngineerAction));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(theGenerateSQL));
+        theDBMenu.addSeparator();
+        theDBMenu.add(new DefaultMenuItem(theGenerateSQLAI));
         theDBMenu.addSeparator();
         theDBMenu.add(new DefaultMenuItem(theGenerateChangelog));
         theDBMenu.addSeparator();

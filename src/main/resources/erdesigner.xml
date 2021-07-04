@@ -411,6 +411,10 @@
             <Text lang="de">DDL Generierung...</Text>
             <Text lang="en">Create DDL for model...</Text>
         </Entry>
+        <Entry id="GENERATESQLWITHAI">
+            <Text lang="de">Query Generieren mit OpenAI GPT-3...</Text>
+            <Text lang="en">Generate Query using OpenAI GPT-3...</Text>
+        </Entry>
         <Entry id="EXECUTESCRIPT">
             <Text lang="de">Ausführen</Text>
             <Text lang="en">Execute</Text>
@@ -424,6 +428,10 @@
         <Entry id="SQLWINDOW">
             <Text lang="de">SQL Fenster</Text>
             <Text lang="en">SQL Window</Text>
+        </Entry>
+        <Entry id="SQLAIWINDOW">
+            <Text lang="de">SQL AI Fenster</Text>
+            <Text lang="en">SQL AI Window</Text>
         </Entry>
         <Entry id="EXCEPTIONWINDOW">
             <Text lang="de">Ausnahmesituation ( Stacktrace )</Text>
